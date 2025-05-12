@@ -1,0 +1,44 @@
+services:
+  web:
+    image: nginx:1.27.5
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - backend
+    depends_on:
+      - siu
+      - siu2
+      - sonny
+  siu:
+    build:
+      context: ./siu
+    container_name: nest-siu
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - backend
+  siu2:
+    build:
+      context: ./siu2
+    container_name: nest-siu2
+    ports:
+      - "3001:3001"
+    networks:
+      - backend
+
+  sonny:
+    build:
+      context: ./sonny
+    container_name: nest-sonny
+    ports:
+      - "3002:3002"
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
