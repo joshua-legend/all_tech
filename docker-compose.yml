@@ -22,13 +22,21 @@ services:
     volumes:
       - certbot-etc:/etc/letsencrypt
       - certbot-var:/var/www/certbot
-    entrypoint: >
-      sh -c "certbot certonly -n
-             --webroot -w /var/www/certbot
-             --email iuttn123@gmail.com
-             --agree-tos --no-eff-email
-             -d joshua-legend.kro.kr && 
-             nginx -s reload"
+  entrypoint:
+    - certbot
+    - certonly
+    - --non-interactive
+    - --preferred-challenges
+    - http-01
+    - --webroot
+    - -w
+    - /var/www/certbot
+    - --email
+    - iuttn123@gmail.com
+    - --agree-tos
+    - --no-eff-email
+    - -d
+    - joshua-legend.kro.kr
 
   siu:
     build:
