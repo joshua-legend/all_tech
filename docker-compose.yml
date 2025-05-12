@@ -36,7 +36,7 @@ services:
       - --agree-tos
       - --no-eff-email
       - -d
-      - joshua-legend.kro.kr
+      - joshua-legend.p-e.kr
 
   siu:
     build:
