@@ -14,9 +14,11 @@ services:
       - siu
       - siu2
       - sonny
+
   certbot:
     image: certbot/certbot
-    depends_on: [nginx]
+    depends_on:
+      - web # “nginx” → “web” 으로 수정
     volumes:
       - certbot-etc:/etc/letsencrypt
       - certbot-var:/var/www/certbot
@@ -26,6 +28,7 @@ services:
              --email iuttn123@gmail.com
              --agree-tos --no-eff-email
              -d joshua-legend.kro.kr"
+
   siu:
     build:
       context: ./siu
@@ -36,6 +39,7 @@ services:
       - NODE_ENV=production
     networks:
       - backend
+
   siu2:
     build:
       context: ./siu2
