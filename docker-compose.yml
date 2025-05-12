@@ -3,14 +3,29 @@ services:
     image: nginx:1.27.5
     ports:
       - "80:80"
+      - "443:443" # HTTPS 추가
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/www/certbot
     networks:
       - backend
     depends_on:
       - siu
       - siu2
       - sonny
+  certbot:
+    image: certbot/certbot
+    depends_on: [nginx]
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/www/certbot
+    entrypoint: >
+      sh -c "certbot certonly
+             --webroot -w /var/www/certbot
+             --email iuttn123@gmail.com
+             --agree-tos --no-eff-email
+             -d joshua-legend.kro.kr"
   siu:
     build:
       context: ./siu
@@ -42,3 +57,7 @@ services:
 networks:
   backend:
     driver: bridge
+
+volumes:
+  certbot-etc:
+  certbot-var:
