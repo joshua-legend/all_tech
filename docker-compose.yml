@@ -23,11 +23,12 @@ services:
       - certbot-etc:/etc/letsencrypt
       - certbot-var:/var/www/certbot
     entrypoint: >
-      sh -c "certbot certonly
+      sh -c "certbot certonly -n
              --webroot -w /var/www/certbot
              --email iuttn123@gmail.com
              --agree-tos --no-eff-email
-             -d joshua-legend.kro.kr"
+             -d joshua-legend.kro.kr && 
+             nginx -s reload"
 
   siu:
     build:
