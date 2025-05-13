@@ -1,24 +1,24 @@
 version: "3.8"
 
 services:
-  web:
-    image: nginx:1.27.5
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      # Nginx 설정
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      # 호스트에서 발급·갱신된 인증서를 컨테이너에 읽기 전용으로 마운트
-      - /etc/letsencrypt:/etc/letsencrypt:ro
-      # HTTP-01 challenge용 웹루트 (Certbot --webroot 경로)
-      - /var/www/certbot:/var/www/certbot:ro
-    networks:
-      - backend
-    depends_on:
-      - siu
-      - siu2
-      - sonny
+  # web:
+  #   image: nginx:1.27.5
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     # Nginx 설정
+  #     - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+  #     # 호스트에서 발급·갱신된 인증서를 컨테이너에 읽기 전용으로 마운트
+  #     - /etc/letsencrypt:/etc/letsencrypt:ro
+  #     # HTTP-01 challenge용 웹루트 (Certbot --webroot 경로)
+  #     - /var/www/certbot:/var/www/certbot:ro
+  #   networks:
+  #     - backend
+  #   depends_on:
+  #     - siu
+  #     - siu2
+  #     - sonny
 
   siu:
     build:
