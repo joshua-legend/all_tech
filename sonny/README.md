@@ -1,99 +1,147 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# worker_processes 1;
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# # 처리할 워커 프로세스 수를 지정
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# events {
 
-## Description
+# worker_connections 1024;
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+# # 각 워커가 동시에 처리할 수 있는 최대 연결 수
 
-## Project setup
+# }
 
-```bash
-$ npm install
-```
+# http {
 
-## Compile and run the project
+# include mime.types;
 
-```bash
-# development
-$ npm run start
+# # 파일 확장자별 MIME 타입 매핑 파일 로드
 
-# watch mode
-$ npm run start:dev
+# default_type application/octet-stream;
 
-# production mode
-$ npm run start:prod
-```
+# # 알 수 없는 파일에 대한 기본 MIME 타입
 
-## Run tests
+# sendfile on;
 
-```bash
-# unit tests
-$ npm run test
+# # 효율적인 파일 전송을 위해 sendfile 사용
 
-# e2e tests
-$ npm run test:e2e
+# keepalive_timeout 65;
 
-# test coverage
-$ npm run test:cov
-```
+# # 연결을 유지할 시간(초)
 
-## Deployment
+# limit_req_zone $binary_remote_addr zone=teemo:10m rate=1r/s;
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+# # IP별 초당 1요청(rate limiting) 구역
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+# upstream siu {
 
-```bash
-$ npm install -g mau
-$ mau deploy
-```
+# server siu:3000;
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+# server siu2:3001;
 
-## Resources
+# # siu 서비스에 대한 로드 밸런싱
 
-Check out a few resources that may come in handy when working with NestJS:
+# }
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+# upstream sonny {
 
-## Support
+# server sonny:3002;
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+# # sonny 서비스 단일 서버
 
-## Stay in touch
+# }
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+# #──────────────────────────────────
 
-## License
+# # HTTP (80) — ACME 챌린지 대응 및 HTTPS 리다이렉션
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+# #──────────────────────────────────
+
+# server {
+
+# listen 80;
+
+# server_name joshua-legend.p-e.kr;
+
+# location /.well-known/acme-challenge/ {
+
+# root /var/www/certbot;
+
+# # Certbot HTTP-01 챌린지 웹루트
+
+# }
+
+# # 모든 HTTP 요청을 HTTPS로 영구 리다이렉트
+
+# return 301 https://$host$request_uri;
+
+# }
+
+# #──────────────────────────────────
+
+# # HTTPS (443) — SSL 종료 및 Proxy Pass
+
+# #──────────────────────────────────
+
+# server {
+
+# listen 443 ssl http2;
+
+# server_name joshua-legend.p-e.kr;
+
+# # SSL 인증서 파일 경로 (호스트에서 바인드 마운트된 디렉터리)
+
+# ssl_certificate /etc/letsencrypt/live/joshua-legend.p-e.kr/fullchain.pem;
+
+# ssl_certificate_key /etc/letsencrypt/live/joshua-legend.p-e.kr/privkey.pem;
+
+# ssl_protocols TLSv1.2 TLSv1.3;
+
+# ssl_ciphers HIGH:!aNULL:!MD5;
+
+# add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+
+# # HSTS 설정: 1년간 HTTPS만 사용
+
+# # — /siu/ 경로는 siu upstream으로
+
+# location /siu/ {
+
+# proxy_pass http://siu/;
+
+# proxy_set_header Host $host;
+
+# proxy_set_header X-Real-IP $remote_addr;
+
+# }
+
+# # — /sonny/ 경로는 sonny upstream으로
+
+# location /sonny/ {
+
+# proxy_pass http://sonny/;
+
+# proxy_set_header Host $host;
+
+# proxy_set_header X-Real-IP $remote_addr;
+
+# }
+
+# # 에러 페이지 설정
+
+# error_page 500 502 503 504 /50x.html;
+
+# location = /50x.html {
+
+# root html;
+
+# }
+
+# }
+
+# }
+
+#───────────────────────────────────────
+
+# nginx.conf (전체 구성)
+
+#───────────────────────────────────────
